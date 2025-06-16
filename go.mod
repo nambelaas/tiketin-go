@@ -2,6 +2,8 @@ module github.com/tiketin-management-api-with-go
 
 go 1.24.3
 
+require github.com/lib/pq v1.10.9
+
 require (
 	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect

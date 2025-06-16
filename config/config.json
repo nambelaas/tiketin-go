@@ -1,0 +1,12 @@
+{
+  "App": {
+    "Port": ":8080"
+  },
+  "Database": {
+    "Host": "localhost",
+    "Port": "5432",
+    "User": "postgres",
+    "Pass": "postgres",
+    "DbName": "tiketin_db"
+  }
+}
