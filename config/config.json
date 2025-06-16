@@ -8,5 +8,9 @@
     "User": "postgres",
     "Pass": "postgres",
     "DbName": "tiketin_db"
+  },
+  "JWT": {
+    "SignatureKey": "Sal&&Sanbercode",
+    "Issuer": "Ticketin"
   }
 }
