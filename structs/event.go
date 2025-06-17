@@ -5,7 +5,7 @@ import "time"
 type Event struct {
 	Id          int        `json:"id"`
 	EventId     *string    `json:"event_id"`
-	UserId      int        `json:"user_id" binding:"required"`
+	UserId      int        `json:"user_id"`
 	Title       string     `json:"title" binding:"required"`
 	Description *string    `json:"description"`
 	Location    string     `json:"location" binding:"required"`

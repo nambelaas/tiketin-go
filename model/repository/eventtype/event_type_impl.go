@@ -22,7 +22,7 @@ func (r *EventTypeRepository) CreateEventType(eventType structs.EventType) error
 
 	rowsAffected, _ := res.RowsAffected()
 	if rowsAffected == 0 {
-		return errors.New("gagal menambahkan event_type")
+		return errors.New("gagal menambahkan event type")
 	}
 
 	return nil
@@ -88,7 +88,7 @@ func (r *EventTypeRepository) UpdateEventType(id string, eventType structs.Event
 
 	rowsAffected, _ := res.RowsAffected()
 	if rowsAffected == 0 {
-		return errors.New("gagal update event_type")
+		return errors.New("gagal update event type")
 	}
 
 	return nil
@@ -104,7 +104,7 @@ func (r *EventTypeRepository) DeleteEventType(id string) error {
 
 	rowsAffected, _ := res.RowsAffected()
 	if rowsAffected == 0 {
-		return errors.New("gagal update event_type")
+		return errors.New("gagal menghapus event type")
 	}
 
 	return nil

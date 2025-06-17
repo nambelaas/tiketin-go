@@ -57,5 +57,6 @@ func GenerateRandomString(length int) string {
 		num, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		result[i] = charset[num.Int64()]
 	}
+
 	return string(result)
 }

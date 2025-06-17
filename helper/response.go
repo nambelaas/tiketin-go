@@ -8,17 +8,6 @@ import (
 )
 
 func PrintErrorResponse(ctx *gin.Context, code int, message string) {
-	// var errData map[string]interface{}
-	// _ = json.Unmarshal([]byte(err.Error()), &errData)
-
-	// response := gin.H{
-	// 	"Success": false,
-	// }
-
-	// for k, v := range errData {
-	// 	response[k] = v
-	// }
-
 	dataError := structs.ErrorStruct{
 		Success: false,
 		Message: message,
@@ -47,7 +36,7 @@ func PrintSuccessResponse(ctx *gin.Context, message string) {
 }
 
 func PrintSuccessResponseWithData(ctx *gin.Context, message string, data interface{}) {
-	dataSuccess := structs.SuccessStruct{
+	dataSuccess := structs.SuccessStructWithData{
 		Success: true,
 		Message: message,
 		Data:    data,

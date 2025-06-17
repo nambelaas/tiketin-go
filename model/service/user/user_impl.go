@@ -61,7 +61,7 @@ func (u *UserService) LoginUser(ctx *gin.Context) (structs.Users, error) {
 func (u *UserService) GetUser(ctx *gin.Context) (structs.Users, error) {
 	dataJwt, err := helper.GetJwtData(ctx)
 	if err != nil {
-		return structs.Users{}, helper.EncodeError(err.Error())
+		return structs.Users{}, err
 	}
 
 	result, err := u.repo.GetUser(dataJwt.UserId)
