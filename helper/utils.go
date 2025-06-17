@@ -1,8 +1,10 @@
 package helper
 
 import (
+	"crypto/rand"
 	"encoding/json"
 	"errors"
+	"math/big"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
@@ -46,4 +48,14 @@ func GetJwtData(ctx *gin.Context) (result structs.ClaimJwt, err error) {
 	result = *dataJwt
 
 	return result, nil
+}
+
+func GenerateRandomString(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	result := make([]byte, length)
+	for i := 0; i < length; i++ {
+		num, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
+		result[i] = charset[num.Int64()]
+	}
+	return string(result)
 }

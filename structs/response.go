@@ -9,7 +9,7 @@ type ErrorStruct struct {
 type SuccessStruct struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"detail"`
+	Data    interface{} `json:"data"`
 }
 
 type SuccessTokenStruct struct {

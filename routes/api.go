@@ -15,6 +15,18 @@ func userRoutes(ge *gin.Engine) {
 	}
 }
 
+func eventTypeRoutes(ge *gin.Engine) {
+	eventType := ge.Group("/api/event-types")
+	{
+		eventType.POST("/create", middleware.CheckJwt(), middleware.AdminOnly(), controller.CreateEventTypeHandler)
+		eventType.GET("/", controller.GetAllEventType)
+		eventType.GET("/:id/events", controller.GetEventByEventTypeId)
+		eventType.PUT("/:id", middleware.CheckJwt(), middleware.AdminOnly(), controller.UpdateEventTypeHandler)
+		eventType.DELETE("/:id", middleware.CheckJwt(), middleware.AdminOnly(), controller.DeleteEventTypeHandler)
+	}
+}
+
 func InitRoute(ge *gin.Engine) {
 	userRoutes(ge)
+	eventTypeRoutes(ge)
 }

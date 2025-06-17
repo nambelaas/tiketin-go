@@ -15,3 +15,12 @@ func IsUserExists(user structs.Users) bool {
 
 	return err == sql.ErrNoRows
 }
+
+func IsEventTypeExists(eventType structs.EventType) bool {
+	sqlStatement := `SELECT id from event_types where name = $1 returning id`
+
+	var id int
+	err := database.DBConn.QueryRow(sqlStatement, eventType.Name).Scan(&id)
+
+	return err == sql.ErrNoRows
+}

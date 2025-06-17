@@ -7,7 +7,7 @@ create table
         title varchar,
         description varchar,
         location varchar,
-        event_data timestamp,
+        event_date timestamp,
         event_type_id integer not null,
         created_at timestamp default CURRENT_TIMESTAMP,
         modified_at timestamp,
