@@ -33,3 +33,12 @@ func IsEventExists(event structs.Event) bool {
 
 	return err == sql.ErrNoRows
 }
+
+func IsTicketExists(event structs.Ticket) bool {
+	sqlStatement := `SELECT id from ticket where name = $1 returning id`
+
+	var id int
+	err := database.DBConn.QueryRow(sqlStatement, event.Name).Scan(&id)
+
+	return err == sql.ErrNoRows
+}

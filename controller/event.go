@@ -15,7 +15,7 @@ var (
 	eventService    = service.NewEventService(eventRepository)
 )
 
-func CreateEventHandler(ctx *gin.Context) {
+func CreateEventHandle(ctx *gin.Context) {
 	err := eventService.CreateEvent(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -25,7 +25,7 @@ func CreateEventHandler(ctx *gin.Context) {
 	helper.PrintSuccessResponse(ctx, "berhasil menambahkan event")
 }
 
-func GetAllEvent(ctx *gin.Context) {
+func GetAllEventHandle(ctx *gin.Context) {
 	data, err := eventService.GetAllEvent(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -35,7 +35,7 @@ func GetAllEvent(ctx *gin.Context) {
 	helper.PrintSuccessResponseWithData(ctx, "berhasil mendapatkan event", data)
 }
 
-func GetEventById(ctx *gin.Context) {
+func GetEventByIdHandle(ctx *gin.Context) {
 	data, err := eventService.GetEventById(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -46,7 +46,7 @@ func GetEventById(ctx *gin.Context) {
 	helper.PrintSuccessResponseWithData(ctx, fmt.Sprintf("berhasil mendapatkan event  %s", id), data)
 }
 
-func GetEventByUser(ctx *gin.Context) {
+func GetEventByUserHandle(ctx *gin.Context) {
 	data, err := eventService.GetEventByUser(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -56,7 +56,7 @@ func GetEventByUser(ctx *gin.Context) {
 	helper.PrintSuccessResponseWithData(ctx, "berhasil mendapatkan list item user", data)
 }
 
-func UpdateEventHandler(ctx *gin.Context) {
+func UpdateEventHandle(ctx *gin.Context) {
 	err := eventService.UpdateEvent(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -66,7 +66,7 @@ func UpdateEventHandler(ctx *gin.Context) {
 	helper.PrintSuccessResponse(ctx, "berhasil update event")
 }
 
-func DeleteEventHandler(ctx *gin.Context) {
+func DeleteEventHandle(ctx *gin.Context) {
 	err := eventService.DeleteEvent(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())

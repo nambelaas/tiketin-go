@@ -15,7 +15,7 @@ var (
 	eventTypeService    = service.NewEventTypeService(eventTypeRepository)
 )
 
-func CreateEventTypeHandler(ctx *gin.Context) {
+func CreateEventTypeHandle(ctx *gin.Context) {
 	err := eventTypeService.CreateEventType(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -25,7 +25,7 @@ func CreateEventTypeHandler(ctx *gin.Context) {
 	helper.PrintSuccessResponse(ctx, "berhasil menambahkan event type")
 }
 
-func GetAllEventType(ctx *gin.Context) {
+func GetAllEventTypeHandle(ctx *gin.Context) {
 	data, err := eventTypeService.GetAllEventType(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -35,7 +35,7 @@ func GetAllEventType(ctx *gin.Context) {
 	helper.PrintSuccessResponseWithData(ctx, "berhasil mendapatkan event type", data)
 }
 
-func GetEventByEventTypeId(ctx *gin.Context) {
+func GetEventByEventTypeIdHandle(ctx *gin.Context) {
 	data, err := eventTypeService.GetEventByEventTypeId(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -46,7 +46,7 @@ func GetEventByEventTypeId(ctx *gin.Context) {
 	helper.PrintSuccessResponseWithData(ctx, fmt.Sprintf("berhasil mendapatkan list event dengan event type %s", id), data)
 }
 
-func UpdateEventTypeHandler(ctx *gin.Context) {
+func UpdateEventTypeHandle(ctx *gin.Context) {
 	err := eventTypeService.UpdateEventType(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -56,7 +56,7 @@ func UpdateEventTypeHandler(ctx *gin.Context) {
 	helper.PrintSuccessResponse(ctx, "berhasil update event type")
 }
 
-func DeleteEventTypeHandler(ctx *gin.Context) {
+func DeleteEventTypeHandle(ctx *gin.Context) {
 	err := eventTypeService.DeleteEventType(ctx)
 	if err != nil {
 		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())

@@ -18,23 +18,33 @@ func userRoutes(ge *gin.Engine) {
 func eventTypeRoutes(ge *gin.Engine) {
 	eventType := ge.Group("/api/event-types")
 	{
-		eventType.POST("/create", middleware.CheckJwt(), middleware.AdminOnly(), controller.CreateEventTypeHandler)
-		eventType.GET("/list", controller.GetAllEventType)
-		eventType.GET("/:id/events", controller.GetEventByEventTypeId)
-		eventType.PUT("/:id/update", middleware.CheckJwt(), middleware.AdminOnly(), controller.UpdateEventTypeHandler)
-		eventType.DELETE("/:id/delete", middleware.CheckJwt(), middleware.AdminOnly(), controller.DeleteEventTypeHandler)
+		eventType.POST("/create", middleware.CheckJwt(), middleware.AdminOnly(), controller.CreateEventTypeHandle)
+		eventType.GET("/list", controller.GetAllEventTypeHandle)
+		eventType.GET("/:id/events", controller.GetEventByEventTypeIdHandle)
+		eventType.PUT("/:id/update", middleware.CheckJwt(), middleware.AdminOnly(), controller.UpdateEventTypeHandle)
+		eventType.DELETE("/:id/delete", middleware.CheckJwt(), middleware.AdminOnly(), controller.DeleteEventTypeHandle)
 	}
 }
 
 func eventRoutes(ge *gin.Engine) {
 	eventType := ge.Group("/api/events")
 	{
-		eventType.POST("/create", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.CreateEventHandler)
-		eventType.GET("/list", controller.GetAllEvent)
-		eventType.GET("/:event_id", controller.GetEventById)
-		eventType.GET("/me", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.GetEventByUser)
-		eventType.PUT("/:event_id/update", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.UpdateEventHandler)
-		eventType.DELETE("/:event_id/delete", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.DeleteEventHandler)
+		eventType.POST("/create", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.CreateEventHandle)
+		eventType.GET("/list", controller.GetAllEventHandle)
+		eventType.GET("/:event_id", controller.GetEventByIdHandle)
+		eventType.GET("/me", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.GetEventByUserHandle)
+		eventType.PUT("/:event_id/update", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.UpdateEventHandle)
+		eventType.DELETE("/:event_id/delete", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.DeleteEventHandle)
+	}
+}
+
+func ticketRoutes(ge *gin.Engine) {
+	eventType := ge.Group("/api/events/:event_id/tickets")
+	{
+		eventType.POST("/create", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.CreateTicketHandle)
+		eventType.GET("/list", controller.GetAllTicketEventHandle)
+		eventType.PUT("/:ticket_id/update", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.UpdateTicketHandle)
+		eventType.DELETE("/:ticket_id/delete", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.DeleteTicketHandle)
 	}
 }
 
@@ -42,4 +52,5 @@ func InitRoute(ge *gin.Engine) {
 	userRoutes(ge)
 	eventTypeRoutes(ge)
 	eventRoutes(ge)
+	ticketRoutes(ge)
 }
