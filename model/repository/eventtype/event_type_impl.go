@@ -54,7 +54,7 @@ func (r *EventTypeRepository) GetAllEventType() ([]structs.EventType, error) {
 
 func (r *EventTypeRepository) GetEventByEventTypeId(id string) ([]structs.Event, error) {
 	var result []structs.Event
-	query := `select e.id, e.event_id, e.user_id, e.title, e.description, e.location, e.event_date, e.created_at, e.modified_at from events e 
+	query := `select e.id, e.user_id, e.title, e.description, e.location, e.event_date, e.created_at, e.modified_at from events e 
 	join event_types et on e.event_type_id = et.id 
 	where et.id = $1`
 
@@ -67,7 +67,7 @@ func (r *EventTypeRepository) GetEventByEventTypeId(id string) ([]structs.Event,
 
 	for rows.Next() {
 		var data = structs.Event{}
-		var errs = rows.Scan(&data.Id, &data.EventId, &data.UserId, &data.Title, &data.Description, &data.Location, &data.EventDate, &data.EventTypeId, &data.CreatedAt, &data.ModifiedAt)
+		var errs = rows.Scan(&data.Id, &data.UserId, &data.Title, &data.Description, &data.Location, &data.EventDate, &data.EventTypeId, &data.CreatedAt, &data.ModifiedAt)
 		if errs != nil {
 			return result, errs
 		}

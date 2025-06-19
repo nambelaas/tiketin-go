@@ -1,13 +1,15 @@
 package helper
 
 import (
-	"crypto/rand"
 	"encoding/json"
 	"errors"
-	"math/big"
+	"fmt"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	"github.com/skip2/go-qrcode"
+	"github.com/spf13/viper"
 	"github.com/tiketin-management-api-with-go/structs"
 )
 
@@ -50,13 +52,24 @@ func GetJwtData(ctx *gin.Context) (result structs.ClaimJwt, err error) {
 	return result, nil
 }
 
-func GenerateRandomString(length int) string {
-	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	result := make([]byte, length)
-	for i := 0; i < length; i++ {
-		num, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
-		result[i] = charset[num.Int64()]
+func GenerateQRCode(orderId int, orderItemID int, ticketTypeId int) (string, error) {
+	baseURL := viper.GetString("App.BaseUrl")
+	qrContentURL := fmt.Sprintf("%s/api/orders/checkin/ticket?orderId=%d&orderItemId=%d&ticketId=%d", baseURL, orderId, orderItemID, ticketTypeId)
+
+	filename := fmt.Sprintf("ticket_%05d_%05d.png", orderItemID, ticketTypeId)
+	localPath := fmt.Sprintf("public/assets/qrcode/%s", filename)
+
+	err := os.MkdirAll("public/assets/qrcode", os.ModePerm)
+	if err != nil {
+		return "", err
 	}
 
-	return string(result)
+	err = qrcode.WriteFile(qrContentURL, qrcode.Medium, 256, localPath)
+	if err != nil {
+		return "", err
+	}
+
+	publicURL := fmt.Sprintf("%s/assets/qrcode/%s", baseURL, filename)
+
+	return publicURL, nil
 }

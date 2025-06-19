@@ -48,9 +48,33 @@ func ticketRoutes(ge *gin.Engine) {
 	}
 }
 
+func reviewRoutes(ge *gin.Engine) {
+	eventType := ge.Group("/api/events/:event_id/reviews")
+	{
+		eventType.POST("/create", middleware.CheckJwt(), middleware.UserOnly(), controller.CreateReviewHandle)
+		eventType.GET("/list", controller.GetAllReviewEventHandle)
+		eventType.PUT("/:review_id/update", middleware.CheckJwt(), middleware.UserOnly(), controller.UpdateReviewHandle)
+	}
+}
+
+func orderRoutes(ge *gin.Engine) {
+	eventType := ge.Group("/api/orders")
+	{
+		eventType.POST("/create", middleware.CheckJwt(), middleware.UserOnly(), controller.CreateOrderHandle)
+		eventType.PUT("/:order_id/pay", middleware.CheckJwt(), middleware.UserOnly(), controller.PayOrderHandle)
+		eventType.PUT("/:order_id/cancel", middleware.CheckJwt(), middleware.UserOnly(), controller.CancelOrderHandle)
+		eventType.GET("/list", middleware.CheckJwt(), controller.GetAllOrderHandle)
+		eventType.GET("/checkin/ticket", controller.CheckInHandle)
+		eventType.GET("/user/:user_id/list", middleware.CheckJwt(), controller.GetOrderByUserHandle)
+		eventType.GET("/:order_id", middleware.CheckJwt(), controller.GetOrderByIdHandle)
+	}
+}
+
 func InitRoute(ge *gin.Engine) {
 	userRoutes(ge)
 	eventTypeRoutes(ge)
 	eventRoutes(ge)
 	ticketRoutes(ge)
+	reviewRoutes(ge)
+	orderRoutes(ge)
 }

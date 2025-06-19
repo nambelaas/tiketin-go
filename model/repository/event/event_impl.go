@@ -1,11 +1,12 @@
 package event
 
 import (
+	"database/sql"
 	"errors"
+	"strconv"
 	"time"
 
 	"github.com/tiketin-management-api-with-go/database"
-	"github.com/tiketin-management-api-with-go/helper"
 	"github.com/tiketin-management-api-with-go/structs"
 )
 
@@ -14,11 +15,9 @@ func NewEventRepository() EventRepositoryInterface {
 }
 
 func (r *EventRepository) CreateEvent(event structs.Event) error {
-	eventId := helper.GenerateRandomString(7)
+	query := `insert into events (user_id,title,description,location,event_date,event_type_id,status) values ($1,$2,$3,$4,$5,$6,$7)`
 
-	query := `insert into events (event_id,user_id,title,description,location,event_date,event_type_id) values ($1,$2,$3,$4,$5,$6,$7)`
-
-	res, err := database.DBConn.Exec(query, eventId, event.UserId, event.Title, event.Description, event.Location, event.EventDate, event.EventTypeId)
+	res, err := database.DBConn.Exec(query, event.UserId, event.Title, event.Description, event.Location, event.EventDate, event.EventTypeId, event.Status)
 	if err != nil {
 		return err
 	}
@@ -44,7 +43,7 @@ func (r *EventRepository) GetAllEvent() ([]structs.Event, error) {
 
 	for rows.Next() {
 		var data = structs.Event{}
-		var errs = rows.Scan(&data.Id, &data.EventId, &data.UserId, &data.Title, &data.Description, &data.Location, &data.EventDate, &data.EventTypeId, &data.CreatedAt, &data.ModifiedAt)
+		var errs = rows.Scan(&data.Id, &data.UserId, &data.Title, &data.Description, &data.Location, &data.EventDate, &data.EventTypeId, &data.Status, &data.CreatedAt, &data.ModifiedAt)
 		if errs != nil {
 			return result, errs
 		}
@@ -55,11 +54,16 @@ func (r *EventRepository) GetAllEvent() ([]structs.Event, error) {
 	return result, nil
 }
 
-func (r *EventRepository) GetEventById(eventId string) (structs.Event, error) {
+func (r *EventRepository) GetEventById(id string) (structs.Event, error) {
 	var result structs.Event
-	query := `select * from events where event_id = $1`
+	query := `select * from events where id = $1`
 
-	err := database.DBConn.QueryRow(query, eventId).Scan(&result.Id, &result.EventId, &result.UserId, &result.Title, &result.Description, &result.Location, &result.EventDate, &result.EventTypeId, &result.CreatedAt, &result.ModifiedAt)
+	idInt, _ := strconv.Atoi(id)
+	err := database.DBConn.QueryRow(query, idInt).Scan(&result.Id, &result.UserId, &result.Title, &result.Description, &result.Location, &result.EventDate, &result.EventTypeId, &result.Status, &result.CreatedAt, &result.ModifiedAt)
+	if err == sql.ErrNoRows {
+		return result, errors.New("event tidak ditemukan")
+	}
+
 	if err != nil {
 		return result, err
 	}
@@ -80,7 +84,7 @@ func (r *EventRepository) GetEventByUser(userId int) ([]structs.Event, error) {
 
 	for rows.Next() {
 		var data = structs.Event{}
-		var errs = rows.Scan(&data.Id, &data.EventId, &data.UserId, &data.Title, &data.Description, &data.Location, &data.EventDate, &data.EventTypeId, &data.CreatedAt, &data.ModifiedAt)
+		var errs = rows.Scan(&data.Id, &data.UserId, &data.Title, &data.Description, &data.Location, &data.EventDate, &data.EventTypeId, &data.Status, &data.CreatedAt, &data.ModifiedAt)
 		if errs != nil {
 			return result, errs
 		}
@@ -91,10 +95,10 @@ func (r *EventRepository) GetEventByUser(userId int) ([]structs.Event, error) {
 	return result, nil
 }
 
-func (r *EventRepository) UpdateEvent(eventId string, event structs.Event) error {
-	query := `update events set title=$1, description=$3, location=$4, event_date=$5, event_type_id=$6, modified_at=$7  where event_id=$2`
+func (r *EventRepository) UpdateEvent(id string, event structs.Event) error {
+	query := `update events set title=$1, description=$3, location=$4, event_date=$5, event_type_id=$6, status=$7 modified_at=$8  where id=$2`
 
-	res, err := database.DBConn.Exec(query, event.Title, eventId, event.Description, event.Location, event.EventDate, event.EventTypeId, time.Now())
+	res, err := database.DBConn.Exec(query, event.Title, id, event.Description, event.Location, event.EventDate, event.EventTypeId, event.Status, time.Now())
 	if err != nil {
 		return err
 	}
@@ -107,10 +111,10 @@ func (r *EventRepository) UpdateEvent(eventId string, event structs.Event) error
 	return nil
 }
 
-func (r *EventRepository) DeleteEvent(eventId string) error {
+func (r *EventRepository) DeleteEvent(id string) error {
 	query := `delete from events where event_id=$1`
 
-	res, err := database.DBConn.Exec(query, eventId)
+	res, err := database.DBConn.Exec(query, id)
 	if err != nil {
 		return err
 	}

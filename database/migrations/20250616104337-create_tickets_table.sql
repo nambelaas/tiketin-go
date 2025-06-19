@@ -2,7 +2,6 @@
 create table
     tickets (
         id serial primary key,
-        ticket_id varchar,
         event_id integer not null,
         name varchar,
         price numeric(10, 2),

@@ -2,7 +2,6 @@
 create table
     reviews (
         id serial primary key,
-        review_id varchar,
         user_id integer not null,
         event_id integer not null,
         rating integer not null,

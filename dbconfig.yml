@@ -1,4 +1,4 @@
-# development:
-#   dialect: postgres
-#   datasource: user=postgres password=postgres dbname=ticketin_db sslmode=disable
-#   dir: database/migrations
+development:
+  dialect: postgres
+  datasource: user=postgres password=postgres dbname=tiketin_db sslmode=disable
+  dir: database/migrations

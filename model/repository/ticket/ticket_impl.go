@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/tiketin-management-api-with-go/database"
-	"github.com/tiketin-management-api-with-go/helper"
 	"github.com/tiketin-management-api-with-go/structs"
 )
 
@@ -14,11 +13,9 @@ func NewTicketRepository() TicketRepositoryInterface {
 }
 
 func (t *TicketRepository) CreateTicket(ticket structs.Ticket) error {
-	ticketId := helper.GenerateRandomString(8)
+	query := `insert into tickets (event_id, name, price, quota) values ($1,$2,$3,$4)`
 
-	query := `insert into tickets (ticket_id, event_id, name, price, quota) values ($1,$2,$3,$4,$5)`
-
-	res, err := database.DBConn.Exec(query, ticketId, ticket.EventId, ticket.Name, ticket.Price, ticket.Quota)
+	res, err := database.DBConn.Exec(query, ticket.EventId, ticket.Name, ticket.Price, ticket.Quota)
 	if err != nil {
 		return err
 	}
@@ -30,10 +27,10 @@ func (t *TicketRepository) CreateTicket(ticket structs.Ticket) error {
 	return nil
 }
 
-func (t *TicketRepository) UpdateTicket(ticketId string, ticket structs.Ticket) error {
-	query := `update tickets set name=$1, quota=$2, price=$3, modified_at=$4 where ticket_id=$5`
+func (t *TicketRepository) UpdateTicket(id int, ticket structs.Ticket) error {
+	query := `update tickets set name=$1, quota=$2, price=$3, modified_at=$4 where id=$5`
 
-	res, err := database.DBConn.Exec(query, ticket.Name, ticket.Quota, ticket.Price, time.Now(), ticketId)
+	res, err := database.DBConn.Exec(query, ticket.Name, ticket.Quota, ticket.Price, time.Now(), id)
 	if err != nil {
 		return err
 	}
@@ -45,11 +42,11 @@ func (t *TicketRepository) UpdateTicket(ticketId string, ticket structs.Ticket) 
 	return nil
 }
 
-func (t *TicketRepository) DeleteTicket(ticketId string) error {
+func (t *TicketRepository) DeleteTicket(id int) error {
 
-	query := `delete from tickets where ticket_id=$1`
+	query := `delete from tickets where id=$1`
 
-	res, err := database.DBConn.Exec(query, ticketId)
+	res, err := database.DBConn.Exec(query, id)
 	if err != nil {
 		return err
 	}
@@ -72,7 +69,7 @@ func (t *TicketRepository) GetAllTicketEvent(eventId int) ([]structs.Ticket, err
 
 	for rows.Next() {
 		var data = structs.Ticket{}
-		var err = rows.Scan(&data.Id, &data.TicketId, &data.EventId, &data.Name, &data.Price, &data.Quota, &data.CreatedAt, &data.ModifiedAt)
+		var err = rows.Scan(&data.Id, &data.EventId, &data.Name, &data.Price, &data.Quota, &data.CreatedAt, &data.ModifiedAt)
 		if err != nil {
 			return result, err
 		}
@@ -81,4 +78,48 @@ func (t *TicketRepository) GetAllTicketEvent(eventId int) ([]structs.Ticket, err
 	}
 
 	return result, nil
+}
+
+func (t *TicketRepository) ReduceQuota(ticketId int, quantity int) error {
+	query := `update tickets set quota=quota-$1, modified_at=$2 where id=$3`
+
+	res, err := database.DBConn.Exec(query, quantity, time.Now(), ticketId)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, _ := res.RowsAffected()
+	if rowsAffected == 0 {
+		return errors.New("gagal mengurangi kuota ticket")
+	}
+
+	return nil
+}
+
+func (t *TicketRepository) RestoreQuota(ticketId int, quantity int) error {
+	query := `update tickets set quota=quota+$1, modified_at=$2 where id=$3`
+
+	res, err := database.DBConn.Exec(query, quantity, time.Now(), ticketId)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, _ := res.RowsAffected()
+	if rowsAffected == 0 {
+		return errors.New("gagal mengurangi kuota ticket")
+	}
+
+	return nil
+}
+
+func (t *TicketRepository) AvailableQuota(ticketId int) (int, error) {
+	query := `select quota from tickets where id=$1`
+
+	var quota int
+	err := database.DBConn.QueryRow(query, ticketId).Scan(&quota)
+	if err != nil {
+		return 0, err
+	}
+
+	return quota, nil
 }

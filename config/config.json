@@ -1,6 +1,7 @@
 {
   "App": {
-    "Port": ":8080"
+    "Port": ":8080",
+    "BaseUrl": "http://localhost:8080"
   },
   "Database": {
     "Host": "localhost",
@@ -11,6 +12,6 @@
   },
   "JWT": {
     "SignatureKey": "Sal&&Sanbercode",
-    "Issuer": "Ticketin"
+    "Issuer": "Tiketin"
   }
 }

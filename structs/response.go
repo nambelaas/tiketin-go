@@ -3,12 +3,12 @@ package structs
 type ErrorStruct struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
-	Detail  interface{} `json:"detail"`
+	Detail  interface{} `json:"detail" binding:"omitempty"`
 }
 
 type SuccessStruct struct {
-	Success bool        `json:"success"`
-	Message string      `json:"message"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }
 
 type SuccessStructWithData struct {

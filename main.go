@@ -13,6 +13,7 @@ func main() {
 	database.Init()
 
 	web := gin.Default()
+	web.Static("/assets", "./public/assets")
 
 	routes.InitRoute(web)
 

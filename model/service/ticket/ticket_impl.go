@@ -2,6 +2,7 @@ package ticket
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tiketin-management-api-with-go/helper"
@@ -67,7 +68,7 @@ func (s *TicketService) UpdateTicket(ctx *gin.Context) error {
 
 	updateTicket.EventId = dataEvent.Id
 
-	ticketId := ctx.Param("ticket_id")
+	ticketId, _ := strconv.Atoi(ctx.Param("ticket_id"))
 
 	err = s.repo.UpdateTicket(ticketId, updateTicket)
 	if err != nil {
@@ -78,7 +79,7 @@ func (s *TicketService) UpdateTicket(ctx *gin.Context) error {
 }
 
 func (s *TicketService) DeleteTicket(ctx *gin.Context) error {
-	ticketId := ctx.Param("ticket_id")
+	ticketId, _ := strconv.Atoi(ctx.Param("ticket_id"))
 
 	err := s.repo.DeleteTicket(ticketId)
 	if err != nil {
