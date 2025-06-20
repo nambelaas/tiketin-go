@@ -66,10 +66,10 @@ func (r *ReviewRepository) GetAllReviewInEvent(eventId int) ([]structs.Review, e
 	return result, nil
 }
 
-func (r *ReviewRepository) HasUserCompletedEvent(userId, eventId int) (bool, error) {
+func (r *ReviewRepository) HasUserCompletedEvent(userId int, eventId int) (bool, error) {
     var count int
-    query := `SELECT COUNT(*) FROM orders WHERE user_id = $1 AND event_id = $2 AND status = 'complete'`
-    err := database.DBConn.QueryRow(query, userId, eventId).Scan(&count)
+    query := `SELECT COUNT(*) FROM orders WHERE user_id = $1 AND event_id = $2 AND status = $3`
+    err := database.DBConn.QueryRow(query, userId, eventId, "complete").Scan(&count)
     if err != nil {
         return false, err
     }
