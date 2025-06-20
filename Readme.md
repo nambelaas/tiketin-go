@@ -67,7 +67,10 @@ config ada di config/config.json
 - `Database.User`
 - `Database.Pass`
 - `Database.DbName`
-- (atau gunakan file `dbconfig.yml`)
+- `App.Port`
+- `App.BaseUrl` (url yang digunakan untuk qr code)
+- `JWT.SignatureKey`
+- `JWT.Issuer`
 
 ## Tools & Library
 
