@@ -1,0 +1,1072 @@
+definitions:
+  Event:
+    description: Fields untuk event
+    properties:
+      created_at:
+        description: waktu pembuatan event
+        type: string
+      description:
+        description: deskripsi event
+        type: string
+      event_date:
+        description: tanggal event
+        type: string
+      event_type_id:
+        description: id jenis event
+        type: integer
+      id:
+        description: Id dari event
+        type: integer
+      location:
+        description: lokasi event
+        type: string
+      modified_at:
+        description: waktu terakhir event diubah
+        type: string
+      status:
+        description: status event (open/closed)
+        enum:
+        - open
+        - closed
+        type: string
+      title:
+        description: nama event
+        type: string
+      user_id:
+        description: Id user pembuat event
+        type: integer
+    required:
+    - event_date
+    - event_type_id
+    - location
+    - status
+    - title
+    type: object
+  EventType:
+    description: Fields untuk jenis event
+    properties:
+      created_at:
+        description: Waktu pembuatan jenis event
+        type: string
+      id:
+        description: Id dari jenis event
+        type: integer
+      modified_at:
+        description: Waktu terakhir jenis event diubah
+        type: string
+      name:
+        description: Nama jenis event
+        type: string
+    required:
+    - name
+    type: object
+  LoginRequest:
+    description: Fields untuk request login
+    properties:
+      email:
+        description: Email user
+        type: string
+      password:
+        description: Password user
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  Order:
+    description: Fields untuk order
+    properties:
+      created_at:
+        description: Waktu pembuatan order
+        type: string
+      event_id:
+        description: Id event yang dipesan
+        type: integer
+      id:
+        description: Id dari order
+        type: integer
+      modified_at:
+        description: Waktu terakhir order diubah
+        type: string
+      order_item:
+        description: Daftar item dalam order
+        items:
+          $ref: '#/definitions/OrderItem'
+        type: array
+      paid_at:
+        description: Waktu pembayaran order
+        type: string
+      payment_method:
+        description: Metode pembayaran order (cash, transfer, etc)
+        type: string
+      status:
+        description: Status dari order (new, paid, complete, cancelled)
+        type: string
+      total:
+        description: Total harga dari order
+        type: number
+      user_id:
+        description: Id user yang membuat order
+        type: integer
+    type: object
+  OrderCreate:
+    description: Fields untuk membuat order
+    properties:
+      event_id:
+        description: Id event yang dipesan
+        type: integer
+      ticket:
+        description: Daftar tiket yang dipesan
+        items:
+          $ref: '#/definitions/OrderTicket'
+        type: array
+    required:
+    - event_id
+    - ticket
+    type: object
+  OrderItem:
+    description: Fields untuk item dalam order
+    properties:
+      created_at:
+        description: Waktu pembuatan order item
+        type: string
+      id:
+        description: Id dari order item
+        type: integer
+      is_check_in:
+        description: Status check-in untuk order item (true jika sudah check-in)
+        type: boolean
+      modified_at:
+        description: Waktu terakhir order item diubah
+        type: string
+      order_id:
+        description: Id dari order yang berisi item ini
+        type: integer
+      qr_code_url:
+        description: Barcode unik untuk order item yang digunakan untuk check-in
+        type: string
+      quantity:
+        description: Jumlah tiket yang dipesan
+        type: integer
+      ticket_type_id:
+        description: Id dari tiket yang dipesan
+        type: integer
+    type: object
+  OrderTicket:
+    description: Fields untuk tiket dalam order
+    properties:
+      quantity:
+        description: Jumlah tiket yang dipesan
+        minimum: 1
+        type: integer
+      ticket_type_id:
+        description: Id dari tiket yang dipesan
+        type: integer
+    required:
+    - quantity
+    - ticket_type_id
+    type: object
+  ResponseError:
+    description: menampilkan response error dengan pesan dan detail, bisa berupa error
+      dari binding atau error lainnya jika detail tidak ada, maka akan diabaikan
+    properties:
+      detail: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  ResponseSuccess:
+    description: menampilkan response sukses hanya dengan pesan
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  ResponseSuccessToken:
+    description: menampilkan response sukses dengan token biasanya digunakan untuk
+      otentikasi atau otorisasi
+    properties:
+      success:
+        type: boolean
+      token:
+        type: string
+    type: object
+  ResponseSuccessWithData:
+    description: menampilkan response sukses dengan pesan dan data bisa berupa struct,
+      slice, atau map jika data tidak ada, maka akan diabaikan
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  Review:
+    description: Fields untuk review event
+    properties:
+      comment:
+        description: Komentar dari review
+        type: string
+      created_at:
+        description: Waktu pembuatan review
+        type: string
+      event_id:
+        description: Id event yang direview
+        type: integer
+      id:
+        description: Id dari review
+        type: integer
+      modified_at:
+        description: Waktu terakhir review diubah
+        type: string
+      rating:
+        description: Rating dari review (1-5)
+        maximum: 5
+        minimum: 1
+        type: integer
+      user_id:
+        description: Id user yang membuat review
+        type: integer
+    required:
+    - rating
+    type: object
+  Tikect:
+    description: Fields untuk tiket event
+    properties:
+      created_at:
+        description: Waktu pembuatan tiket
+        type: string
+      event_id:
+        description: Id event yang tiket ini miliki
+        type: integer
+      id:
+        description: Id dari tiket
+        type: integer
+      modified_at:
+        description: Waktu terakhir tiket diubah
+        type: string
+      name:
+        description: Nama dari tiket
+        type: string
+      price:
+        description: Harga dari tiket
+        type: number
+      quota:
+        description: Jumlah tiket yang tersedia
+        type: integer
+    required:
+    - name
+    - price
+    - quota
+    type: object
+  Users:
+    description: Fields untuk user
+    properties:
+      created_at:
+        description: Waktu pembuatan user
+        type: string
+      email:
+        description: Email user
+        type: string
+      id:
+        description: Id dari user
+        type: integer
+      name:
+        description: Nama user
+        type: string
+      password:
+        description: Password user
+        type: string
+      role:
+        description: Peran user (admin/user/organizer) jika kosong berarti perannya
+          user
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /api/event-types/:id/delete:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        Menghapus jenis event
+        * Hanya bisa diakses oleh admin
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menghapus event type
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menghapus event type
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Delete Event Type
+      tags:
+      - Event Type
+  /api/event-types/:id/events:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan daftar event berdasarkan jenis event
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan list event
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan list event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Get Event By Event Type Id
+      tags:
+      - Event Type
+  /api/event-types/:id/update:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Memperbarui jenis event
+        * Hanya bisa diakses oleh admin
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Event Type Data
+        in: body
+        name: event-type
+        required: true
+        schema:
+          $ref: '#/definitions/EventType'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil memperbarui event type
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal memperbarui event type
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Update Event Type
+      tags:
+      - Event Type
+  /api/event-types/create:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Mendaftarkan jenis event
+        * Hanya bisa diakses oleh admin
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Event Type Data
+        in: body
+        name: event-type
+        required: true
+        schema:
+          $ref: '#/definitions/EventType'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menambahkan event type
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menambahkan event type
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Create Event Type
+      tags:
+      - Event Type
+  /api/event-types/list:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan semua jenis event
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan event type
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan event type
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Get All Event Type
+      tags:
+      - Event Type
+  /api/events/:event_id:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan detail event berdasarkan id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan daftar event
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan daftar event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Detail Event
+      tags:
+      - Event
+  /api/events/:event_id/delete:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        Menghapus event berdasarkan id
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menghapus event
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menghapus event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Delete Event
+      tags:
+      - Event
+  /api/events/:event_id/reviews/:review_id/update:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Memperbarui data review untuk event
+        * Hanya bisa diakses oleh user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review Data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/Review'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil memperbarui review
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal memperbarui review
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Update Review
+      tags:
+      - Review
+  /api/events/:event_id/reviews/create:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Menambahkan data review untuk event
+        * Hanya bisa diakses oleh user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review Data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/Review'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menambahkan review
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menambahkan review
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Create Review
+      tags:
+      - Review
+  /api/events/:event_id/reviews/list:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan semua daftar review untuk event
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan data review
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan data review
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: List Review
+      tags:
+      - Review
+  /api/events/:event_id/tickets/:ticket_id/delete:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Menghapus data ticket untuk event
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menghapus ticket
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menghapus ticket
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Delete Ticket
+      tags:
+      - Ticket
+  /api/events/:event_id/tickets/:ticket_id/update:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Memperbarui data ticket untuk event
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Ticket Data
+        in: body
+        name: ticket
+        required: true
+        schema:
+          $ref: '#/definitions/Tikect'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil memperbarui ticket
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal memperbarui ticket
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Update Ticket
+      tags:
+      - Ticket
+  /api/events/:event_id/tickets/create:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Menambahkan data ticket untuk event
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Ticket Data
+        in: body
+        name: ticket
+        required: true
+        schema:
+          $ref: '#/definitions/Tikect'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menambahkan ticket
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menambahkan ticket
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Create Ticket
+      tags:
+      - Ticket
+  /api/events/:event_id/tickets/list:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        Mendapatkan daftar ticket untuk event
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan ticket
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan ticket
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: List Ticket
+      tags:
+      - Ticket
+  /api/events/:event_id/update:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Memperbarui data event
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Event Data
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil memperbarui event
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal memperbarui event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Update event
+      tags:
+      - Event
+  /api/events/create:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Menambahkan data event
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Event Data
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menambahkan event
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menambahkan event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Create Event
+      tags:
+      - Event
+  /api/events/list:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan semua daftar event
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan daftar event
+          schema:
+            items:
+              $ref: '#/definitions/ResponseSuccessWithData'
+            type: array
+        "400":
+          description: Gagal mendapatkan daftar event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: List Event
+      tags:
+      - Event
+  /api/events/me:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        Mendapatkan daftar event berdasarkan id user
+        * Hanya bisa diakses oleh admin atau organizer
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan daftar event
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan daftar event
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Detail Event By User
+      tags:
+      - Event
+  /api/orders/:order_id:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan order berdasarkan id
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan detail order
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan detail order
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Detail Order
+      tags:
+      - Order
+  /api/orders/:order_id/cancel:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Membatalkan order
+        * Hanya bisa diakses oleh user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil membatalkan order
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal membatalkan order
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Cancel Order
+      tags:
+      - Order
+  /api/orders/:order_id/pay:
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Memperbarui status pembayaran order
+        * Hanya bisa diakses oleh user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil membayar order
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal membayar order
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Pay Order
+      tags:
+      - Order
+  /api/orders/checkin/ticket:
+    get:
+      consumes:
+      - application/json
+      description: Melakukan check-in pada order
+      parameters:
+      - description: Order Id
+        in: query
+        name: orderId
+        required: true
+        type: string
+      - description: Order Item Id
+        in: query
+        name: orderItemId
+        required: true
+        type: string
+      - description: Ticket Id
+        in: query
+        name: ticketId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil melakukan check-in order
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal melakukan check-in order
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Check In Order
+      tags:
+      - Order
+  /api/orders/create:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Menambahkan data order
+        * Hanya bisa diakses oleh user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/OrderCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil menambahkan order
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal menambahkan order
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Create Order
+      tags:
+      - Order
+  /api/orders/list:
+    put:
+      consumes:
+      - application/json
+      description: Mendapatkan daftar order
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan daftar order
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan daftar order
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: List Order
+      tags:
+      - Order
+  /api/orders/user/:user_id/list:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan daftar order user
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan daftar order user
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan daftar order user
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: List Order User
+      tags:
+      - Order
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint untuk login user
+      parameters:
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil login
+          schema:
+            $ref: '#/definitions/ResponseSuccessToken'
+        "400":
+          description: Gagal login
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Login User
+      tags:
+      - User
+  /api/users/me:
+    get:
+      consumes:
+      - application/json
+      description: Mengambil data user yang sedang login
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendapatkan user
+          schema:
+            $ref: '#/definitions/ResponseSuccessWithData'
+        "400":
+          description: Gagal mendapatkan user
+          schema:
+            $ref: '#/definitions/ResponseError'
+      security:
+      - BearerAuth: []
+      summary: Get User
+      tags:
+      - User
+  /api/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint untuk mendaftarkan user baru
+      parameters:
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Users'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Berhasil mendaftarkan user
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "400":
+          description: Gagal mendaftarkan user
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Register User
+      tags:
+      - User
+swagger: "2.0"

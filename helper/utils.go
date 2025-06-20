@@ -52,11 +52,11 @@ func GetJwtData(ctx *gin.Context) (result structs.ClaimJwt, err error) {
 	return result, nil
 }
 
-func GenerateQRCode(orderId int, orderItemID int, ticketTypeId int) (string, error) {
+func GenerateQRCode(orderId int, orderItemID int) (string, error) {
 	baseURL := viper.GetString("App.BaseUrl")
-	qrContentURL := fmt.Sprintf("%s/api/orders/checkin/ticket?orderId=%d&orderItemId=%d&ticketId=%d", baseURL, orderId, orderItemID, ticketTypeId)
+	qrContentURL := fmt.Sprintf("%s/api/orders/checkin/ticket?orderId=%d&orderItemId=%d", baseURL, orderId, orderItemID)
 
-	filename := fmt.Sprintf("ticket_%05d_%05d.png", orderItemID, ticketTypeId)
+	filename := fmt.Sprintf("ticket_%05d_%05d.png", orderId, orderItemID)
 	localPath := fmt.Sprintf("public/assets/qrcode/%s", filename)
 
 	err := os.MkdirAll("public/assets/qrcode", os.ModePerm)

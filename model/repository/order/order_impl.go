@@ -51,7 +51,7 @@ func (r *OrderRepository) CreateOrder(userId int, order structs.OrderCreate) err
 				return fmt.Errorf("gagal menambahkan order item untuk order %d", orderId)
 			}
 
-			qrUrl, err := helper.GenerateQRCode(orderId, orderItemId, ticket.TicketTypeId)
+			qrUrl, err := helper.GenerateQRCode(orderId, orderItemId)
 			if err != nil {
 				fmt.Println(err)
 				_, rollbackErr := database.DBConn.Exec(`DELETE FROM orders WHERE id = $1`, orderId)

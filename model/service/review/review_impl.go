@@ -42,6 +42,15 @@ func (s *ReviewService) CreateReview(ctx *gin.Context) error {
 		return errors.New("gagal menambahkan review, data sudah ada")
 	}
 
+	purchased, err := s.repo.HasUserCompletedEvent(newReview.UserId, newReview.EventId)
+	if err != nil {
+		return err
+	}
+
+	if !purchased {
+		return errors.New("kamu belum menyelesaikan event ini, tidak bisa membuat review")
+	}
+
 	err = s.repo.CreateReview(newReview)
 	if err != nil {
 		return err

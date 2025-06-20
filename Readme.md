@@ -77,8 +77,10 @@ Tiketin adalah RESTful API berbasis Golang untuk manajemen event, tiket, order, 
 - [jwt-go](https://github.com/golang-jwt/jwt)
 - [sql-migrate](https://github.com/rubenv/sql-migrate)
 - [qr-code](https://github.com/skip2/go-qrcode)
+- [swag](https://github.com/swaggo/swag)
 - dan lainnya
 
----
+## Docs Api (Swagger)
+https://{host}/swagger/index.html
 
 **Lisensi:** MIT

@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tiketin-management-api-with-go/config"
 	"github.com/tiketin-management-api-with-go/database"
+	_ "github.com/tiketin-management-api-with-go/docs"
 	"github.com/tiketin-management-api-with-go/routes"
 )
 
