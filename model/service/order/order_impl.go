@@ -127,6 +127,20 @@ func (s *OrderService) GetOrderByUser(ctx *gin.Context) ([]structs.Order, error)
 	return data, nil
 }
 
+func (s *OrderService) GetOrderByUserAuth(ctx *gin.Context) ([]structs.Order, error) {
+	dataJwt, err := helper.GetJwtData(ctx)
+	if err != nil {
+		return []structs.Order{}, err
+	}
+
+	data, err := s.repo.GetOrderByUser(dataJwt.UserId)
+	if err != nil {
+		return []structs.Order{}, err
+	}
+
+	return data, nil
+}
+
 func (s *OrderService) GetOrderById(ctx *gin.Context) (structs.Order, error) {
 	orderId, _ := strconv.Atoi(ctx.Param("order_id"))
 

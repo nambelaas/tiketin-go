@@ -67,7 +67,8 @@ func orderRoutes(ge *gin.Engine) {
 		eventType.PUT("/:order_id/cancel", middleware.CheckJwt(), middleware.UserOnly(), controller.CancelOrderHandle)
 		eventType.GET("/list", middleware.CheckJwt(), controller.GetAllOrderHandle)
 		eventType.GET("/checkin/ticket", controller.CheckInHandle)
-		eventType.GET("/user/:user_id/list", middleware.CheckJwt(), controller.GetOrderByUserHandle)
+		eventType.GET("/user/me", middleware.CheckJwt(), middleware.UserOnly(), controller.GetOrderByUserAuthHandle)
+		eventType.GET("/user/:user_id/list", middleware.CheckJwt(), middleware.AdminOrOrganizerOnly(), controller.GetOrderByUserHandle)
 		eventType.GET("/:order_id", middleware.CheckJwt(), controller.GetOrderByIdHandle)
 	}
 }

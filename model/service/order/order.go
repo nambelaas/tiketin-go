@@ -12,6 +12,7 @@ type OrderServiceInterface interface {
 	CancelOrder(ctx *gin.Context) error
 	GetAllOrder(ctx *gin.Context) ([]structs.Order, error)
 	GetOrderByUser(ctx *gin.Context) ([]structs.Order, error)
+	GetOrderByUserAuth(ctx *gin.Context) ([]structs.Order, error)
 	GetOrderById(ctx *gin.Context) (structs.Order, error)
 	CheckIn(ctx *gin.Context) error
 }

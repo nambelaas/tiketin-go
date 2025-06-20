@@ -138,6 +138,25 @@ func GetOrderByUserHandle(ctx *gin.Context) {
 	helper.PrintSuccessResponseWithData(ctx, fmt.Sprintf("berhasil mendapatkan data order dari user %s",userId), order)
 }
 
+//	@summary		List Order By User Auth
+//	@description	Mendapatkan daftar order user berdasarkan user yang sedang login
+//	@tags			Order
+//	@accept			json
+//	@produce		json
+//	@Param			Authorization	header		string							true	"Bearer token"
+//	@Success		200				{object}	structs.SuccessStructWithData	"Berhasil mendapatkan daftar order user"
+//	@Failure		400				{object}	structs.ErrorStruct				"Gagal mendapatkan daftar order user"
+//	@Router			/api/orders/user/me [get]
+func GetOrderByUserAuthHandle(ctx *gin.Context) {
+	order, err := orderService.GetOrderByUserAuth(ctx)
+	if err != nil {
+		helper.PrintErrorResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	helper.PrintSuccessResponseWithData(ctx, "berhasil mendapatkan data order",order)
+}
+
 //	@summary		Check In Order
 //	@description	Melakukan check-in pada order
 //	@tags			Order
