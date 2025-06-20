@@ -1,6 +1,6 @@
-# Tiketin - Event Management API
+# Tiketin - Ticket Event Management API
 
-Tiketin adalah RESTful API berbasis Golang untuk manajemen event, tiket, order, dan review. Project ini menggunakan Gin sebagai web framework dan PostgreSQL sebagai database utama.
+Tiketin adalah aplikasi web berbasis rest api untuk pengelolaan event, tiket event, pemesanan tiket, dan fitur review.
 
 ## Fitur Utama
 
@@ -35,7 +35,7 @@ Tiketin adalah RESTful API berbasis Golang untuk manajemen event, tiket, order, 
    cd Tiketin
    ```
 
-2. **Atur konfigurasi database**
+2. **Atur konfigurasi database** (optional jika butuh migrasi baru maka perlu setup)
    - Edit file `dbconfig.yml` atau gunakan environment variable sesuai kebutuhan.
 
 3. **Jalankan migration**
@@ -61,12 +61,12 @@ Tiketin adalah RESTful API berbasis Golang untuk manajemen event, tiket, order, 
 - **Review Event:** `POST /api/events/:event_id/reviews/create`
 
 ## Environment Variable
-
-- `DATABASE_HOST`
-- `DATABASE_PORT`
-- `DATABASE_USER`
-- `DATABASE_PASS`
-- `DATABASE_DBNAME`
+config ada di config/config.json
+- `Database.Host`
+- `Database.Port`
+- `Database.User`
+- `Database.Pass`
+- `Database.DbName`
 - (atau gunakan file `dbconfig.yml`)
 
 ## Tools & Library
