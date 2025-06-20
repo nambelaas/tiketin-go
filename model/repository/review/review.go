@@ -6,7 +6,7 @@ type ReviewRepositoryInterface interface {
 	CreateReview(review structs.Review) error
 	UpdateReview(id int, review structs.Review) error
 	GetAllReviewInEvent(eventId int) ([]structs.Review, error)
-	HasUserCompletedEvent(userId, eventId int) (bool, error)
+	HasUserCompletedEvent(userId, eventId int) (string, error)
 }
 
 type ReviewRepository struct {

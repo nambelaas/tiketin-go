@@ -1,8 +1,8 @@
 package review
 
 import (
+	"database/sql"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/tiketin-management-api-with-go/database"
@@ -67,14 +67,15 @@ func (r *ReviewRepository) GetAllReviewInEvent(eventId int) ([]structs.Review, e
 	return result, nil
 }
 
-func (r *ReviewRepository) HasUserCompletedEvent(userId int, eventId int) (bool, error) {
-	var count int
-	fmt.Println("userId:", userId, "eventId:", eventId)
-	query := `SELECT COUNT(*) FROM orders WHERE user_id = $1 AND event_id = $2 AND status = $3`
-	err := database.DBConn.QueryRow(query, userId, eventId, "complete").Scan(&count)
-	if err != nil {
-		fmt.Println("QUERY ERROR:", err)
-		return false, err
+func (r *ReviewRepository) HasUserCompletedEvent(userId int, eventId int) (string, error) {
+	var status string
+	query := `SELECT status FROM orders WHERE user_id = $1 AND event_id = $2 LIMIT 1`
+	err := database.DBConn.QueryRow(query, userId, eventId).Scan(&status)
+	if err == sql.ErrNoRows {
+		return "", sql.ErrNoRows
 	}
-	return count > 0, nil
+	if err != nil {
+		return "", err
+	}
+	return status, nil
 }

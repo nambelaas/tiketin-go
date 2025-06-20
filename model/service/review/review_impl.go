@@ -1,6 +1,7 @@
 package review
 
 import (
+	"database/sql"
 	"errors"
 	"strconv"
 
@@ -42,12 +43,15 @@ func (s *ReviewService) CreateReview(ctx *gin.Context) error {
 		return errors.New("gagal menambahkan review, data sudah ada")
 	}
 
-	purchased, err := s.repo.HasUserCompletedEvent(newReview.UserId, newReview.EventId)
+	status, err := s.repo.HasUserCompletedEvent(newReview.UserId, newReview.EventId)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return errors.New("kamu belum pernah membeli tiket event ini, tidak bisa membuat review")
+		}
 		return err
 	}
 
-	if !purchased {
+	if status != "complete" {
 		return errors.New("kamu belum menyelesaikan event ini, tidak bisa membuat review")
 	}
 
