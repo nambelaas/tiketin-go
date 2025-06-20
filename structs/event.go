@@ -6,23 +6,23 @@ import "time"
 // @Description Fields untuk event
 type Event struct {
 	// Id dari event
-	Id          int        `json:"id"`
+	Id int `json:"id"`
 	// Id user pembuat event
-	UserId      int        `json:"user_id"`
+	UserId int `json:"user_id"`
 	// nama event
-	Title       string     `json:"title" binding:"required"`
+	Title string `json:"title" binding:"required"`
 	// deskripsi event
-	Description *string    `json:"description"`
+	Description *string `json:"description"`
 	// lokasi event
-	Location    string     `json:"location" binding:"required"`
+	Location string `json:"location" binding:"required"`
 	// tanggal event
-	EventDate   time.Time  `json:"event_date" binding:"required"`
+	EventDate time.Time `json:"event_date" binding:"required"`
 	// id jenis event
-	EventTypeId int        `json:"event_type_id" binding:"required"`
+	EventTypeId int `json:"event_type_id" binding:"required"`
 	// status event (open/closed)
-	Status      string     `json:"status" binding:"required,oneof=open closed"`
+	Status string `json:"status" binding:"required,oneof=open closed"`
 	// waktu pembuatan event
-	CreatedAt   time.Time  `json:"created_at"`
+	CreatedAt time.Time `json:"created_at"`
 	// waktu terakhir event diubah
-	ModifiedAt  *time.Time `json:"modified_at"`
-}// @name Event
+	ModifiedAt *time.Time `json:"modified_at"`
+} // @name Event

@@ -8,14 +8,14 @@ type ErrorStruct struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
 	Detail  interface{} `json:"detail" binding:"omitempty"`
-}// @name ResponseError
+} // @name ResponseError
 
 // ResponseSuccess
 // @Description menampilkan response sukses hanya dengan pesan
 type SuccessStruct struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
-}// @name ResponseSuccess
+} // @name ResponseSuccess
 
 // ResponseSuccessWithData
 // @Description menampilkan response sukses dengan pesan dan data
@@ -25,7 +25,7 @@ type SuccessStructWithData struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
-}// @name ResponseSuccessWithData
+} // @name ResponseSuccessWithData
 
 // ResponseSuccessToken
 // @Description menampilkan response sukses dengan token
@@ -33,4 +33,4 @@ type SuccessStructWithData struct {
 type SuccessTokenStruct struct {
 	Success bool   `json:"success"`
 	Token   string `json:"token"`
-}// @name ResponseSuccessToken
+} // @name ResponseSuccessToken
