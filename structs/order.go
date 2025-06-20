@@ -18,7 +18,7 @@ type Order struct {
 	// Waktu pembayaran order
 	PaidAt *time.Time `json:"paid_at" binding:"omitempty"`
 	// Metode pembayaran order (cash, transfer, etc)
-	PaymentMethod string `json:"payment_method"`
+	PaymentMethod *string `json:"payment_method"`
 	// Waktu pembuatan order
 	CreatedAt time.Time `json:"created_at"`
 	// Waktu terakhir order diubah
