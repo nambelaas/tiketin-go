@@ -73,6 +73,8 @@ Tiketin adalah RESTful API berbasis Golang untuk manajemen event, tiket, order, 
 
 - [Gin](https://github.com/gin-gonic/gin)
 - [PostgreSQL](https://www.postgresql.org/)
+- `bcrypt` untuk hash password
+- [viper](https://github.com/spf13/viper)
 - [go-playground/validator](https://github.com/go-playground/validator)
 - [jwt-go](https://github.com/golang-jwt/jwt)
 - [sql-migrate](https://github.com/rubenv/sql-migrate)
