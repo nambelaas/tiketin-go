@@ -1,7 +1,7 @@
 {
   "App": {
     "Port": ":8080",
-    "BaseUrl": "https://tiketin-management-api-with-go-production.up.railway.app"
+    "BaseUrl": "https://tiketin-go.up.railway.app"
   },
   "Database": {
     "Host": "postgres.railway.internal",
