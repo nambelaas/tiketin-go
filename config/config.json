@@ -1,14 +1,14 @@
 {
   "App": {
     "Port": ":8080",
-    "BaseUrl": "http://localhost:8080"
+    "BaseUrl": "https://tiketin-management-api-with-go-production.up.railway.app"
   },
   "Database": {
-    "Host": "localhost",
+    "Host": "postgres.railway.internal",
     "Port": "5432",
     "User": "postgres",
-    "Pass": "postgres",
-    "DbName": "tiketin_db"
+    "Pass": "raWkMaqUvmCJUAaJdNOOdYeYAWoJZIrA",
+    "DbName": "railway"
   },
   "JWT": {
     "SignatureKey": "Sal&&Sanbercode",
